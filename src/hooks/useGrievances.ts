@@ -1,6 +1,6 @@
-import {useState, useCallback} from 'react';
-import {Grievance} from '../types/grievance';
-import {getGrievances} from '../services/grievanceService';
+import { useState, useCallback } from 'react';
+import { Grievance } from '../types/grievance';
+import { getGrievances } from '../services/grievanceService';
 
 interface UseGrievancesReturn {
   grievances: Grievance[];
@@ -10,10 +10,7 @@ interface UseGrievancesReturn {
   refresh: () => Promise<void>;
 }
 
-/**
- * Hook to load and manage the list of all grievances.
- * Exposes loading / error states for clean UI handling.
- */
+
 const useGrievances = (): UseGrievancesReturn => {
   const [grievances, setGrievances] = useState<Grievance[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -38,7 +35,7 @@ const useGrievances = (): UseGrievancesReturn => {
     await fetchGrievances();
   }, [fetchGrievances]);
 
-  return {grievances, isLoading, error, fetchGrievances, refresh};
+  return { grievances, isLoading, error, fetchGrievances, refresh };
 };
 
 export default useGrievances;

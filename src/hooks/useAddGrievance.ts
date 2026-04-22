@@ -1,11 +1,11 @@
-import {useState, useCallback} from 'react';
+import { useState, useCallback } from 'react';
 import {
   GrievanceFormData,
   GrievanceFormErrors,
   GrievanceCategory,
 } from '../types/grievance';
-import {addGrievance} from '../services/grievanceService';
-import {validateGrievanceForm, hasErrors} from '../utils/validation';
+import { addGrievance } from '../services/grievanceService';
+import { validateGrievanceForm, hasErrors } from '../utils/validation';
 
 interface UseAddGrievanceReturn {
   formData: GrievanceFormData;
@@ -26,10 +26,7 @@ const INITIAL_FORM: GrievanceFormData = {
   category: 'General' as GrievanceCategory,
 };
 
-/**
- * Hook that owns the Add Grievance form state, validation, and submission logic.
- * Returns `true` from submitForm() on success, `false` on validation failure / error.
- */
+
 const useAddGrievance = (): UseAddGrievanceReturn => {
   const [formData, setFormData] = useState<GrievanceFormData>(INITIAL_FORM);
   const [errors, setErrors] = useState<GrievanceFormErrors>({});
@@ -41,9 +38,9 @@ const useAddGrievance = (): UseAddGrievanceReturn => {
       field: K,
       value: GrievanceFormData[K],
     ): void => {
-      setFormData(prev => ({...prev, [field]: value}));
+      setFormData(prev => ({ ...prev, [field]: value }));
       // Clear field-level error on change
-      setErrors(prev => ({...prev, [field]: undefined}));
+      setErrors(prev => ({ ...prev, [field]: undefined }));
       setSubmitError(null);
     },
     [],
