@@ -1,11 +1,9 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   FlatList,
-  StatusBar,
-  Animated,
   TextInput,
   TouchableOpacity,
 } from 'react-native';
@@ -35,9 +33,6 @@ const GrievanceListScreen: React.FC<GrievanceListScreenProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<FilterStatus>('all');
 
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-
-
   useEffect(() => {
     fetchGrievances();
   }, [fetchGrievances]);
@@ -48,15 +43,6 @@ const GrievanceListScreen: React.FC<GrievanceListScreenProps> = ({
     });
     return unsubscribe;
   }, [navigation, fetchGrievances]);
-
-  useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 400,
-      useNativeDriver: true,
-    }).start();
-  }, [fadeAnim]);
-
 
   const filteredGrievances = grievances
     .filter(g => (activeFilter === 'all' ? true : g.status === activeFilter))
@@ -87,9 +73,6 @@ const GrievanceListScreen: React.FC<GrievanceListScreenProps> = ({
 
   const renderHeader = () => (
     <View>
-
-
-
       <View style={styles.filterRow}>
         {FILTER_OPTIONS.map(opt => {
           const isActive = activeFilter === opt.value;
@@ -110,7 +93,6 @@ const GrievanceListScreen: React.FC<GrievanceListScreenProps> = ({
           );
         })}
       </View>
-
 
       <Text style={styles.countLabel}>
         {filteredGrievances.length}{' '}
@@ -155,8 +137,7 @@ const GrievanceListScreen: React.FC<GrievanceListScreenProps> = ({
 
   return (
     <View style={styles.root}>
-      <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
-      <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
+      <View style={styles.container}>
         <FlatList
           data={filteredGrievances}
           renderItem={renderItem}
@@ -170,8 +151,7 @@ const GrievanceListScreen: React.FC<GrievanceListScreenProps> = ({
           keyboardShouldPersistTaps="handled"
           keyboardDismissMode="on-drag"
         />
-      </Animated.View>
-
+      </View>
 
       <TouchableOpacity
         style={styles.fab}
@@ -188,7 +168,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
   },
-  container: { flex: 1 },
+  container: {
+    flex: 1,
+    backgroundColor: Colors.background,
+  },
   listContent: {
     flexGrow: 1,
     paddingHorizontal: Layout.spacing.lg,
@@ -196,34 +179,6 @@ const styles = StyleSheet.create({
     paddingBottom: 100,
   },
 
-
-  searchBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: Colors.surface,
-    borderRadius: Layout.radius.md,
-    borderWidth: 1.5,
-    borderColor: Colors.surfaceBorder,
-    paddingHorizontal: Layout.spacing.md,
-    marginBottom: Layout.spacing.md,
-    gap: Layout.spacing.sm,
-    minHeight: 52,
-  },
-  searchIcon: { fontSize: 16 },
-  searchInput: {
-    flex: 1,
-    fontSize: Layout.fontSize.md,
-    color: Colors.textPrimary,
-    paddingVertical: Layout.spacing.sm + 2,
-  },
-  clearBtn: {
-    fontSize: 16,
-    color: Colors.textSecondary,
-    paddingHorizontal: 6,
-    fontWeight: Layout.fontWeight.bold,
-  },
-
-  // Filters
   filterRow: {
     flexDirection: 'row',
     gap: Layout.spacing.sm,
@@ -259,7 +214,6 @@ const styles = StyleSheet.create({
     fontWeight: Layout.fontWeight.semiBold,
   },
 
-
   fab: {
     position: 'absolute',
     bottom: Layout.spacing.xl,
@@ -278,7 +232,6 @@ const styles = StyleSheet.create({
     lineHeight: 32,
     fontWeight: Layout.fontWeight.regular,
   },
-
 
   errorContainer: {
     flex: 1,
